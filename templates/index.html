@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ name }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--panel:rgba(10,15,44,.8);--solid:#0a0f2c;--text:#e6f0ff;--muted:#8ea2d6;--a:#22d3ee;--b:#a78bfa;--ut:#021018;--line:#1d2a66}
+body[data-mode="alt"]{--panel:rgba(255,255,255,.86);--solid:#ffffff;--text:#1a2233;--muted:#5b6578;--line:rgba(0,0,0,.12);background:#e9eef6}
+html,body{height:100%}
+body{font-family:'Exo 2',system-ui,sans-serif;color:var(--text);background:radial-gradient(1px 1px at 20px 30px,#fff,transparent) 0 0/200px 180px,radial-gradient(1.5px 1.5px at 90px 120px,#fff,transparent) 0 0/200px 180px,radial-gradient(1px 1px at 160px 60px,#cbd5ff,transparent) 0 0/200px 180px,radial-gradient(circle at 75% 15%,#3b0764 0,transparent 50%),#02030c;display:flex;align-items:center;justify-content:center;padding:18px;transition:background .4s}
+.deco{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.deco span{position:absolute;color:var(--a);opacity:.2;animation:float 12s ease-in-out infinite;user-select:none}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-26px) rotate(5deg)}}
+.app{position:relative;z-index:1;width:100%;max-width:900px;height:calc(100vh - 36px);height:calc(100dvh - 36px);background:var(--panel);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:22px;box-shadow:0 24px 70px rgba(0,0,0,.3);display:flex;overflow:hidden;animation:pop .5s ease}
+@keyframes pop{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.side{display:none}
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.top{display:flex;gap:14px;align-items:center;padding:14px 20px;background:linear-gradient(90deg,var(--a),var(--b));color:var(--ut)}
+.logo{font-size:30px;width:50px;height:50px;flex:none;border-radius:50%;background:rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center}
+.ttl{flex:1;min-width:0}
+.ttl h1{font-size:19px;line-height:1.2}
+.tagline{font-size:12.5px;opacity:.85;margin-top:1px}
+.meta{margin-top:5px;font-size:12px;display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.badge{background:rgba(255,255,255,.26);padding:2px 10px;border-radius:999px;font-weight:600}
+.status i{display:inline-block;width:8px;height:8px;border-radius:50%;background:#22c55e;margin-right:5px;animation:pulse 1.6s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.7)}100%{box-shadow:0 0 0 8px rgba(34,197,94,0)}}
+.tools{display:flex;gap:8px}
+.tools button{border:0;width:36px;height:36px;border-radius:10px;background:rgba(127,127,127,.25);color:inherit;font-size:16px;cursor:pointer;transition:.15s}
+.tools button:hover{transform:scale(1.08)}
+.notice{margin:12px 22px 0;padding:10px 14px;border-radius:12px;background:rgba(239,68,68,.14);border:1px solid #ef4444;color:var(--text);font-size:13.5px}
+.chat{flex:1;overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth}
+.msg{max-width:82%;padding:12px 16px;border-radius:18px;line-height:1.55;font-size:15px;word-wrap:break-word;animation:pop .3s ease}
+.msg.bot{align-self:flex-start;background:rgba(127,127,127,.15);border:1px solid var(--line)}
+.msg.user{align-self:flex-end;background:linear-gradient(135deg,var(--a),var(--b));color:var(--ut)}
+.msg.err{border-color:#ef4444;color:#ef4444;background:rgba(239,68,68,.1)}
+.msg pre{background:rgba(0,0,0,.45);color:#f2f2f2;padding:10px 12px;border-radius:10px;overflow-x:auto;margin:8px 0;font-size:13px}
+.msg code{font-family:'Fira Code',Consolas,monospace;background:rgba(127,127,127,.25);padding:1px 5px;border-radius:5px;font-size:.9em}
+.msg pre code{background:none;padding:0}
+.msg ul{margin:6px 0 6px 20px}
+.msg h4{margin:8px 0 4px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;padding:0 22px 10px}
+.chip{border:1px solid var(--a);color:var(--text);background:transparent;padding:6px 12px;border-radius:999px;font:inherit;font-size:13px;cursor:pointer;transition:.15s}
+.chip:hover{background:var(--a);color:var(--ut);transform:translateY(-2px)}
+.composer{display:flex;gap:10px;padding:14px 22px 18px;border-top:1px solid var(--line)}
+textarea{flex:1;resize:none;max-height:120px;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:rgba(127,127,127,.12);color:var(--text);font:inherit;font-size:15px;outline:none;transition:.15s}
+textarea:focus{border-color:var(--a);box-shadow:0 0 0 3px rgba(127,127,127,.18)}
+#send{border:0;padding:0 24px;border-radius:14px;font:inherit;font-weight:700;color:var(--ut);background:linear-gradient(135deg,var(--a),var(--b));cursor:pointer;transition:.15s}
+#send:hover:not(:disabled){transform:translateY(-2px)}
+#send:disabled{opacity:.5;cursor:not-allowed}
+.dots span{display:inline-block;width:8px;height:8px;margin:0 2px;border-radius:50%;background:var(--a);animation:bounce 1s infinite}
+.dots span:nth-child(2){animation-delay:.15s}
+.dots span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,80%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-6px);opacity:1}}
+
+/* Layout: classic */
+.layout-classic .msg.bot{border-radius:4px 18px 18px 18px}
+.layout-classic .msg.user{border-radius:18px 4px 18px 18px}
+
+/* Layout: sidebar */
+.layout-sidebar .app{max-width:1100px}
+.layout-sidebar .side{display:flex;flex-direction:column;gap:10px;width:250px;flex:none;padding:26px 18px;border-right:1px solid var(--line);background:rgba(127,127,127,.09);overflow-y:auto}
+.side .big{font-size:52px}
+.side h2{font-size:18px}
+.side p{font-size:13px;color:var(--muted);margin-bottom:6px}
+.side button{text-align:left;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:transparent;color:var(--text);font:inherit;font-size:14px;cursor:pointer;transition:.15s}
+.side button:hover{background:linear-gradient(135deg,var(--a),var(--b));color:var(--ut);border-color:transparent;transform:translateX(4px)}
+.layout-sidebar .top{background:transparent;color:var(--text);border-bottom:1px solid var(--line)}
+.layout-sidebar .logo{background:linear-gradient(135deg,var(--a),var(--b))}
+.layout-sidebar .tagline{display:none}
+.layout-sidebar .badge{background:rgba(127,127,127,.25)}
+.layout-sidebar .chips{display:none}
+@media(max-width:780px){.layout-sidebar .side{display:none}.layout-sidebar .chips{display:flex}}
+
+/* Layout: terminal */
+.layout-terminal .app{max-width:1000px;border-radius:8px}
+.layout-terminal .top{background:rgba(0,0,0,.4);color:var(--a);border-bottom:1px solid var(--line)}
+.layout-terminal .top::before{content:"\25CF \25CF \25CF";letter-spacing:4px;color:var(--b);font-size:12px}
+.layout-terminal .logo{width:auto;height:auto;background:none;font-size:22px}
+.layout-terminal .tagline{display:none}
+.layout-terminal .badge{background:rgba(127,127,127,.25);color:var(--text);border-radius:3px}
+.layout-terminal .msg{max-width:100%;border-radius:2px;background:transparent;border:0;border-left:3px solid var(--a);padding:6px 12px}
+.layout-terminal .msg.user{align-self:stretch;background:transparent;color:var(--b);border-left-color:var(--b)}
+.layout-terminal .msg.user::before{content:"> ";font-weight:700}
+.layout-terminal .msg.err{border-left-color:#ef4444}
+.layout-terminal .chip,.layout-terminal textarea,.layout-terminal #send{border-radius:3px}
+
+/* Layout: hero */
+.layout-hero .app{flex-direction:column;max-width:960px}
+.layout-hero .main{overflow:hidden}
+.layout-hero .top{padding:26px 30px 56px;align-items:flex-start;position:relative}
+.layout-hero .tools{position:absolute;right:20px;top:18px}
+.layout-hero .logo{background:none;font-size:46px;width:auto;height:auto}
+.layout-hero .ttl h1{font-size:27px}
+.layout-hero .tagline{font-size:14.5px}
+.layout-hero .chat{background:var(--solid);border-radius:26px 26px 0 0;margin-top:-30px;position:relative}
+.layout-hero .notice{position:relative;z-index:2;margin-top:-14px}
+.layout-hero .msg{border-radius:22px}
+
+@media(max-width:600px){
+  body{padding:0}
+  .app{height:100vh;height:100dvh;max-width:none;border-radius:0;border:0}
+  .chat{padding:14px}.msg{max-width:92%;font-size:14.5px}
+  .composer{padding:10px 12px 14px}.chips{padding:0 14px 8px}
+  .layout-hero .top{padding:20px 18px 50px}.layout-hero .ttl h1{font-size:21px}
+  .tagline{display:none}
+}
+</style>
+</head>
+<body class="layout-terminal">
+<div class="deco" aria-hidden="true">
+  <span style="left:11%;top:7%;font-size:22px;animation-delay:-0.0s;animation-duration:9s">🚀</span>
+  <span style="left:48%;top:60%;font-size:35px;animation-delay:-1.3s;animation-duration:11s">🛰️</span>
+  <span style="left:85%;top:25%;font-size:48px;animation-delay:-2.6s;animation-duration:13s">🪐</span>
+  <span style="left:30%;top:78%;font-size:31px;animation-delay:-3.9s;animation-duration:15s">☄️</span>
+  <span style="left:67%;top:43%;font-size:44px;animation-delay:-5.2s;animation-duration:17s">✦</span>
+  <span style="left:12%;top:8%;font-size:27px;animation-delay:-6.5s;animation-duration:9s">🌙</span>
+  <span style="left:49%;top:61%;font-size:40px;animation-delay:-7.8s;animation-duration:11s">🌌</span>
+  <span style="left:86%;top:26%;font-size:23px;animation-delay:-1.1s;animation-duration:13s">🌍</span>
+  <span style="left:31%;top:79%;font-size:36px;animation-delay:-2.4s;animation-duration:15s">🚀</span>
+  <span style="left:68%;top:44%;font-size:49px;animation-delay:-3.7s;animation-duration:17s">🛰️</span>
+  <span style="left:13%;top:9%;font-size:32px;animation-delay:-5.0s;animation-duration:9s">🪐</span>
+  <span style="left:50%;top:62%;font-size:45px;animation-delay:-6.3s;animation-duration:11s">☄️</span>
+  <span style="left:87%;top:27%;font-size:28px;animation-delay:-7.6s;animation-duration:13s">✦</span>
+  <span style="left:32%;top:80%;font-size:41px;animation-delay:-0.9s;animation-duration:15s">🌙</span>
+  <span style="left:69%;top:45%;font-size:24px;animation-delay:-2.2s;animation-duration:17s">🌌</span>
+  <span style="left:14%;top:10%;font-size:37px;animation-delay:-3.5s;animation-duration:9s">🌍</span>
+</div>
+<div class="app">
+  <aside class="side">
+    <div class="big">{{ emoji }}</div>
+    <h2>{{ name }}</h2>
+    <p>{{ tagline }}</p>
+    {% for t in topics %}<button class="topic" data-topic="{{ t }}">{{ t }}</button>{% endfor %}
+  </aside>
+  <main class="main">
+    <header class="top">
+      <div class="logo">{{ emoji }}</div>
+      <div class="ttl">
+        <h1>{{ name }}</h1>
+        <div class="tagline">{{ tagline }}</div>
+        <div class="meta"><span class="badge">{{ domain }}</span><span class="status"><i></i>Online</span></div>
+      </div>
+      <div class="tools">
+        <button id="theme" title="Switch light / dark" aria-label="Switch light or dark mode">&#9680;</button>
+        <button id="clear" title="Clear chat" aria-label="Clear chat">&#128465;</button>
+      </div>
+    </header>
+    {% if not configured %}<div class="notice">{{ no_key_message }}</div>{% endif %}
+    <div id="chat" class="chat"></div>
+    <div id="chips" class="chips"></div>
+    <div class="composer">
+      <textarea id="input" rows="1" placeholder="Ask me about {{ domain }}..."></textarea>
+      <button id="send">Send</button>
+    </div>
+  </main>
+</div>
+
+<script>
+const WELCOME = {{ welcome|tojson }};
+const SUGGESTIONS = {{ suggestions|tojson }};
+const chat = document.getElementById("chat");
+const input = document.getElementById("input");
+const sendBtn = document.getElementById("send");
+const chips = document.getElementById("chips");
+let history = [];
+
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+function md(t){
+  return t.split("```").map(function(p,i){
+    if(i%2){ p=p.replace(/^[\w+-]*\n/,""); return "<pre><code>"+esc(p)+"</code></pre>"; }
+    p=esc(p)
+      .replace(/`([^`\n]+)`/g,"<code>$1</code>")
+      .replace(/\*\*([^*]+)\*\*/g,"<strong>$1</strong>")
+      .replace(/^#{1,6} (.+)$/gm,"<h4>$1</h4>")
+      .replace(/^\s*[-*] (.+)$/gm,"<li>$1</li>");
+    p=p.replace(/(?:<li>.*<\/li>\n?)+/g,function(m){return "<ul>"+m.replace(/\n/g,"")+"</ul>";});
+    return p.replace(/\n/g,"<br>").replace(/<\/h4><br>/g,"</h4>").replace(/<\/ul><br>/g,"</ul>");
+  }).join("");
+}
+
+function addMsg(text, cls, raw){
+  const d = document.createElement("div");
+  d.className = "msg " + cls;
+  if(raw){ d.textContent = text; } else { d.innerHTML = md(text); }
+  chat.appendChild(d);
+  chat.scrollTop = chat.scrollHeight;
+  return d;
+}
+
+async function send(text){
+  text = (text || input.value).trim();
+  if(!text || sendBtn.disabled) return;
+  input.value = ""; input.style.height = "auto";
+  addMsg(text, "user", true);
+  sendBtn.disabled = true;
+  const typing = addMsg("", "bot");
+  typing.innerHTML = '<span class="dots"><span></span><span></span><span></span></span>';
+  try{
+    const res = await fetch("/chat", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({message: text, history: history})
+    });
+    let data = {};
+    try { data = await res.json(); } catch(e) { data = {}; }
+    typing.remove();
+    if(res.ok && data.response){
+      addMsg(data.response, "bot");
+      history.push({role:"user", text:text}, {role:"model", text:data.response});
+    } else {
+      addMsg(data.error || "Something went wrong. Please try again.", "bot err", true);
+    }
+  } catch(e){
+    typing.remove();
+    addMsg("Network error. Please check your connection and try again.", "bot err", true);
+  }
+  sendBtn.disabled = false;
+  input.focus();
+}
+
+function resetChat(){
+  history = [];
+  chat.innerHTML = "";
+  addMsg(WELCOME, "bot");
+}
+
+sendBtn.addEventListener("click", function(){ send(); });
+input.addEventListener("keydown", function(e){
+  if(e.key === "Enter" && !e.shiftKey){ e.preventDefault(); send(); }
+});
+input.addEventListener("input", function(){
+  input.style.height = "auto";
+  input.style.height = Math.min(input.scrollHeight, 120) + "px";
+});
+document.getElementById("clear").addEventListener("click", resetChat);
+document.querySelectorAll(".topic").forEach(function(b){
+  b.addEventListener("click", function(){ send("Explain the basics of " + b.dataset.topic + "."); });
+});
+SUGGESTIONS.forEach(function(s){
+  const c = document.createElement("button");
+  c.className = "chip"; c.textContent = s;
+  c.addEventListener("click", function(){ send(s); });
+  chips.appendChild(c);
+});
+
+document.getElementById("theme").addEventListener("click", function(){
+  const alt = document.body.getAttribute("data-mode") === "alt";
+  if(alt){ document.body.removeAttribute("data-mode"); } else { document.body.setAttribute("data-mode", "alt"); }
+  try { localStorage.setItem("mode", alt ? "main" : "alt"); } catch(e) {}
+});
+try { if(localStorage.getItem("mode") === "alt"){ document.body.setAttribute("data-mode", "alt"); } } catch(e) {}
+
+resetChat();
+</script>
+</body>
+</html>
